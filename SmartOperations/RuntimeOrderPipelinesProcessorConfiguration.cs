@@ -8,11 +8,11 @@ using Microsoft.Commerce.Providers.Components;
 
 namespace SmartOperations
 {
-	/// <summary>
-	/// Responsible for making a valid OrderPipelinesProcessorConfiguration with pipelines we specify at runtime.
-	/// This is a subclass of OrderPipelinesProcessorConfiguration so that we can call the protected DeserializeElement
-	/// with our new XML structure. 
-	/// </summary>
+    /// <summary>
+    /// Responsible for making a valid OrderPipelinesProcessorConfiguration with pipelines we specify at runtime.
+    /// This is a subclass of OrderPipelinesProcessorConfiguration so that we can call the protected DeserializeElement
+    /// with our new XML structure. 
+    /// </summary>
     public class RuntimeOrderPipelinesProcessorConfiguration : OrderPipelinesProcessorConfiguration
     {
         protected RuntimeOrderPipelinesProcessorConfiguration(XNode xml)

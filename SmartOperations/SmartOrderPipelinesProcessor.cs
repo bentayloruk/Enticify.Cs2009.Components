@@ -4,10 +4,10 @@ using Microsoft.Commerce.Providers.Components;
 
 namespace SmartOperations
 {
-	/// <summary>
-	/// Responsible for allowing a developer to specify the pipelines to run as part of the CommerceOperation.
-	/// When present, the alternate configuration is used rather than what is in ChannelConfiguration.config.
-	/// </summary>
+    /// <summary>
+    /// Responsible for allowing a developer to specify the pipelines to run as part of the CommerceOperation.
+    /// When present, the alternate configuration is used rather than what is in ChannelConfiguration.config.
+    /// </summary>
     public class SmartOrderPipelinesProcessor : OrderPipelinesProcessor
     {
         public override void Execute(CommerceOperation operation, OperationCacheDictionary operationCache, CommerceOperationResponse response)
@@ -42,10 +42,10 @@ namespace SmartOperations
 
         private void MaybeConfigureFromOperation(CommerceOperation operation)
         {
-			//Configure will have been called with the "real" ConfigurationElement from the ChannelConfiguration.config.
-			//We "re-Configure" if we can create a new config from the operation.
+            //Configure will have been called with the "real" ConfigurationElement from the ChannelConfiguration.config.
+            //We "re-Configure" if we can create a new config from the operation.
             var config = RuntimeOrderPipelinesProcessorConfiguration.MaybeCreate(operation);
-			if(config != null) Configure(config);
+            if(config != null) Configure(config);
         }
     }
 }

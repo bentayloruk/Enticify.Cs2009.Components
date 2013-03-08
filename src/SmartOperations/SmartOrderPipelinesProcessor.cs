@@ -1,4 +1,6 @@
-﻿using Microsoft.Commerce.Broker;
+﻿using System;
+using System.Configuration;
+using Microsoft.Commerce.Broker;
 using Microsoft.Commerce.Contracts.Messages;
 using Microsoft.Commerce.Providers.Components;
 
@@ -10,42 +12,61 @@ namespace SmartOperations
     /// </summary>
     public class SmartOrderPipelinesProcessor : OrderPipelinesProcessor
     {
+        private OrderPipelinesProcessorConfiguration _realConfiguration;
+
+        public new void Configure(ConfigurationElement configuration)
+        {
+            //Store the .config configuration section for us to use as base later.
+            _realConfiguration  = configuration as OrderPipelinesProcessorConfiguration;
+            base.Configure(configuration);
+        }
         public override void Execute(CommerceOperation operation, OperationCacheDictionary operationCache, CommerceOperationResponse response)
         {
-            MaybeConfigureFromOperation(operation);
+            AltConfigurePipelinesIfRequestedByOperation(operation);
             base.Execute(operation, operationCache, response);
         }
 
         public override void ExecuteCreate(CommerceCreateOperation createOperation, OperationCacheDictionary operationCache, CommerceCreateOperationResponse response)
         {
-            MaybeConfigureFromOperation(createOperation);
+            AltConfigurePipelinesIfRequestedByOperation(createOperation);
             base.ExecuteCreate(createOperation, operationCache, response);
         }
 
         public override void ExecuteDelete(CommerceDeleteOperation deleteOperation, OperationCacheDictionary operationCache, CommerceDeleteOperationResponse response)
         {
-            MaybeConfigureFromOperation(deleteOperation);
+            AltConfigurePipelinesIfRequestedByOperation(deleteOperation);
             base.ExecuteDelete(deleteOperation, operationCache, response);
         }
 
         public override void ExecuteQuery(CommerceQueryOperation queryOperation, OperationCacheDictionary operationCache, CommerceQueryOperationResponse response)
         {
-            MaybeConfigureFromOperation(queryOperation);
+            AltConfigurePipelinesIfRequestedByOperation(queryOperation);
             base.ExecuteQuery(queryOperation, operationCache, response);
         }
 
         public override void ExecuteUpdate(CommerceUpdateOperation updateOperation, OperationCacheDictionary operationCache, CommerceUpdateOperationResponse response)
         {
-            MaybeConfigureFromOperation(updateOperation);
+            AltConfigurePipelinesIfRequestedByOperation(updateOperation);
             base.ExecuteUpdate(updateOperation, operationCache, response);
         }
 
-        private void MaybeConfigureFromOperation(CommerceOperation operation)
+        private void AltConfigurePipelinesIfRequestedByOperation(CommerceOperation operation)
         {
             //Configure will have been called with the "real" ConfigurationElement from the ChannelConfiguration.config.
-            //We "re-Configure" if we can create a new config from the operation.
-            var config = RuntimeOrderPipelinesProcessorConfiguration.MaybeCreate(operation);
-            if(config != null) Configure(config);
+            //We "re-Configure" if this key is present in the operation.Model.
+            if (!operation.Model.Properties.ContainsProperty("AltPipelineConfig")) return;
+
+            if(_realConfiguration == null)
+                throw new InvalidOperationException("Configure should have been called before an Execute.");
+
+            //Change this func if you want to switch names with a different convention.
+            Func<string, string> nameChanger = s =>
+            {
+                const string suffix = "_enticify";
+                return !s.EndsWith(suffix, StringComparison.InvariantCultureIgnoreCase) ? s : s.Substring(0, s.Length - suffix.Length);
+            };
+            var config = SmartOrderPipelinesProcessorConfiguration.Create(_realConfiguration, nameChanger);
+            Configure(config);
         }
     }
 }

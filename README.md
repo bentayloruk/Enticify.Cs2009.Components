@@ -12,8 +12,9 @@ Wish you could change *at runtime* the PCF files that your Commerce Server 2009 
 
 ### Configuration
 
-1.  Make a copy of basket.pcf with your chosen suffix.  E.g. basket_topbanana.pcf.
-2.  basket.pcf is now your secondary pipeline so change it as you want (e.g. add debug stuff).
+1.  Choose a suffix for Primary pipelines.  I'm using _topbanana.
+1.  Make a copy of basket.pcf and add your suffix (e.g. basket_topbanana.pcf).
+2.  basket.pcf is now your *secondary* pipeline so change it as you want (e.g. add debug stuff).
 2.  Add your new pipeline to the ChannelConfiguration.config pipelines section:  
 ```xml
 <pipelines>
@@ -37,6 +38,7 @@ Wish you could change *at runtime* the PCF files that your Commerce Server 2009 
 ...
 </Component>
 ```
+
 5.  Update the **Pipeline name** to your primary name:   
 ```xml
 <Component name="Order Pipelines Processor" type="Enticify.Cs2009.Components.ConfigurableOrderPipelinesProcessor, Enticify.Cs2009.Components, Version=0.1.0.0, Culture=neutral, PublicKeyToken=10ff57ed14d5fefa">

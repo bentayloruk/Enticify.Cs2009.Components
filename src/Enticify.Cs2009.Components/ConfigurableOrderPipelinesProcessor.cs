@@ -62,7 +62,7 @@ namespace Enticify.Cs2009.Components
         /// </summary>
         /// <param name="model"></param>
         /// <param name="primaryPcfSuffix"></param>
-        static public void UserAlternatePipelinesWhereApplicable(CommerceEntity model, string primaryPcfSuffix)
+        static public void UserSecondaryPipelinesWhereApplicable(CommerceEntity model, string primaryPcfSuffix)
         {
             if (model == null) throw new ArgumentNullException("model");
             if (primaryPcfSuffix == null) throw new ArgumentNullException("primaryPcfSuffix");

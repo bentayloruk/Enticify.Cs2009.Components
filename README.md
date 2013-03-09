@@ -26,7 +26,7 @@ Wish you could change *at runtime* the PCF files that your Commerce Server 2009 
     <pipeline name="total" path="total.pcf" type="OrderPipeline" />
 </pipelines>
 ```
-4.  Replace uses of OrderPipelineProcessor with ConfigurableOrderPipelineProcessor.  You just need to change the **type** attribute to the following:  
+4.  Replace uses of OrderPipelineProcessor with ConfigurableOrderPipelineProcessor.  You just need to change the **type** attribute...:  
 ```xml
 <!-- From this type ... -->
 <Component name="Order Pipelines Processor" type="Microsoft.Commerce.Providers.Components.OrderPipelinesProcessor, Microsoft.Commerce.Providers, Version=1.0.0.0, Culture=neutral,PublicKeyToken=31bf3856ad364e35">

@@ -1,11 +1,7 @@
 ConfigurableOrderPipelineProcessor
 ====================================
 
-Wish you could change *at runtime* the PCF files that Commerce Server 2009 runs?  This would let you have **normal** PCF files and **debug** PCF files (for those times).
-
-Primary pipelines are the ones you want to run 99% of the time.
-
-Secondary pipelines are the ones we switch to at runtime (if requested).
+Wish you could change *at runtime* the PCF files that your Commerce Server 2009 Operation Sequence runs?  This would let you have **normal** and **debug** PCFs (for those times) or **awesome** and **plain** PCFs.  **Primary** pipelines are the ones you want to run 99% of the time.  **Secondary** pipelines are the ones we switch to at runtime (if requested).
 
 ### Installation
 
@@ -27,16 +23,7 @@ Secondary pipelines are the ones we switch to at runtime (if requested).
     <pipeline name="total" path="total.pcf" type="OrderPipeline" />
 </pipelines>
 ```
-
-Configure your **ChannelConfiguration.config** to have primary/secondary pipelines **where required**.  I'm going to set this up for basket only.
-
-
-*Logging and transaction attributes removed for brevity*
-
-### Update uses of OrderPipelineProcessor in your ChannelConfiguration.config
-
-1.  Swap out CS' OrderPipelineProcessor for ConfigurableOrderPipelineProcessor.
-
+4.  Replace uses of OrderPipelineProcessor with ConfigurableOrderPipelineProcessor.  You just need to change the **type** attribute to the following:  
 ```xml
 <Component name="Order Pipelines Processor" type="Enticify.Cs2009.Components.ConfigurableOrderPipelinesProcessor, Enticify.Cs2009.Components, Version=0.1.0.0, Culture=neutral, PublicKeyToken=10ff57ed14d5fefa">
   ...

@@ -32,7 +32,6 @@ Wish you could change *at runtime* the PCF files that your Commerce Server 2009 
 <Component name="Order Pipelines Processor" type="Enticify.Cs2009.Components.ConfigurableOrderPipelinesProcessor, Enticify.Cs2009.Components, Version=0.1.0.0, Culture=neutral, PublicKeyToken=10ff57ed14d5fefa">
   ...
 </Component>
-
 <!-- To this type ... -->
 <Component name="Order Pipelines Processor" type="Microsoft.Commerce.Providers.Components.OrderPipelinesProcessor, Microsoft.Commerce.Providers, Version=1.0.0.0, Culture=neutral,PublicKeyToken=31bf3856ad364e35">
 ...
@@ -59,7 +58,7 @@ Wish you could change *at runtime* the PCF files that your Commerce Server 2009 
 
 1.  Add a reference to **Enticify.Cs2009.Components**.
 2.  Set up your Basket message.  E.g.:  
-    var basketQuery = new CommerceQuery<Basket>();
+    `var basketQuery = new CommerceQuery<Basket>();`
 3.  Configure the **Model** to use **Secondary** pipelines:  
-    ConfigurableOrderPipelinesProcessor.UserSecondaryPipelinesWhereApplicable(basketQuery.Model, "_topbanana");
+    `ConfigurableOrderPipelinesProcessor.UserSecondaryPipelinesWhereApplicable(basketQuery.Model, "_topbanana");`
 4.  You're done.

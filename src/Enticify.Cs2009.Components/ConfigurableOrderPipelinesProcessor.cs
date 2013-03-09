@@ -18,7 +18,7 @@ namespace Enticify.Cs2009.Components
 
         public new void Configure(ConfigurationElement configuration)
         {
-            //Store the .config configuration section for us to use as base later.
+            //Store the .config configuration section for us to maybe created modified version later (if requested on the model).
             //Note, we had to implement IConfigurable as well (despite it being implemented on our base class) or this would not be called.
             _realConfiguration  = configuration as OrderPipelinesProcessorConfiguration;
             base.Configure(configuration);
@@ -81,7 +81,7 @@ namespace Enticify.Cs2009.Components
             var suffix = operation.Model.GetPropertyValue(ModelKey).ToString();
 
             if(String.IsNullOrEmpty(suffix))
-                throw new InvalidOperationException(string.Format("You must specify a non-empty suffic for {0}.", ModelKey));
+                throw new InvalidOperationException(string.Format("You must specify a non-empty suffix for {0}.", ModelKey));
 
             //Change this func if you want to switch names with a different convention.
             Func<string, string> nameChanger = s => !s.EndsWith(suffix, StringComparison.InvariantCultureIgnoreCase) ? s : s.Substring(0, s.Length - suffix.Length);

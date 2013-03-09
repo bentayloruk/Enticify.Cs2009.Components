@@ -38,7 +38,7 @@ Wish you could change *at runtime* the PCF files that your Commerce Server 2009 
 ...
 </Component>
 ```
-6.  Update the **Pipeline name** to your primary name:   
+6.  Update the **Pipeline name** to your primary name:  
 ```xml
 <Component name="Order Pipelines Processor" type="Enticify.Cs2009.Components.ConfigurableOrderPipelinesProcessor, Enticify.Cs2009.Components, Version=0.1.0.0, Culture=neutral, PublicKeyToken=10ff57ed14d5fefa">
   <Configuration
@@ -57,9 +57,9 @@ Wish you could change *at runtime* the PCF files that your Commerce Server 2009 
 
 ### Usage - how to switch at runtime
 
-1.  Reference to **Enticify.Cs2009.Components**.
-2.  Set up your Basket message.  E.g.:
+1.  Add a reference to **Enticify.Cs2009.Components**.
+2.  Set up your Basket message.  E.g.:  
     var basketQuery = new CommerceQuery<Basket>();
-3.  Configure the **Model** to use **Secondary** pipelines:
+3.  Configure the **Model** to use **Secondary** pipelines:  
     ConfigurableOrderPipelinesProcessor.UserSecondaryPipelinesWhereApplicable(basketQuery.Model, "_topbanana");
 4.  You're done.

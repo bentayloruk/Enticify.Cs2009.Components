@@ -38,8 +38,7 @@ Wish you could change *at runtime* the PCF files that your Commerce Server 2009 
 ...
 </Component>
 ```
-
-5.  Update the **Pipeline name** to your primary name:   
+6.  Update the **Pipeline name** to your primary name:   
 ```xml
 <Component name="Order Pipelines Processor" type="Enticify.Cs2009.Components.ConfigurableOrderPipelinesProcessor, Enticify.Cs2009.Components, Version=0.1.0.0, Culture=neutral, PublicKeyToken=10ff57ed14d5fefa">
   <Configuration

@@ -62,3 +62,15 @@ Wish you could change *at runtime* the PCF files that your Commerce Server 2009 
 3.  Configure the **Model** to use **Secondary** pipelines:  
     `ConfigurableOrderPipelinesProcessor.UserSecondaryPipelinesWhereApplicable(basketQuery.Model, "_topbanana");`
 4.  You're done.
+
+## How is this happening?
+
+It's very simple.  Look [here](https://github.com/enticify/Enticify.Cs2009.Components/blob/master/src/Enticify.Cs2009.Components/ConfigurableOrderPipelinesProcessor.cs) and [here](https://github.com/enticify/Enticify.Cs2009.Components/blob/master/src/Enticify.Cs2009.Components/RuntimeOrderPipelinesProcessorConfiguration.cs).
+
+## Wot no tests!?
+
+I have integration tests that work for me.  Unfortunately, they are currently in the private [Enticify repos](http://www.enticify.com/).
+
+## Why Dude?
+
+To help my lovely customers switch between the Enticify and CS promotion components so they can see the awesome difference :)

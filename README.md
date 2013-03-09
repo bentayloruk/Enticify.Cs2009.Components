@@ -12,7 +12,7 @@ Wish you could change *at runtime* the PCF files that your Commerce Server 2009 
 
 ### Configuration
 
-1.  Choose a suffix for Primary pipelines.  I'm using _topbanana.
+1.  Choose a suffix for your **Primary** pipelines.  I'm using **_topbanana**.
 1.  Make a copy of basket.pcf and add your suffix (e.g. basket_topbanana.pcf).
 2.  basket.pcf is now your *secondary* pipeline so change it as you want (e.g. add debug stuff).
 2.  Add your new pipeline to the ChannelConfiguration.config pipelines section:  
@@ -29,12 +29,12 @@ Wish you could change *at runtime* the PCF files that your Commerce Server 2009 
 4.  Replace uses of OrderPipelineProcessor with ConfigurableOrderPipelineProcessor.  You just need to change the **type** attribute to the following:  
 ```xml
 <!-- From this type ... -->
-<Component name="Order Pipelines Processor" type="Enticify.Cs2009.Components.ConfigurableOrderPipelinesProcessor, Enticify.Cs2009.Components, Version=0.1.0.0, Culture=neutral, PublicKeyToken=10ff57ed14d5fefa">
-  ...
-</Component>
-<!-- To this type ... -->
 <Component name="Order Pipelines Processor" type="Microsoft.Commerce.Providers.Components.OrderPipelinesProcessor, Microsoft.Commerce.Providers, Version=1.0.0.0, Culture=neutral,PublicKeyToken=31bf3856ad364e35">
 ...
+</Component>
+<!-- To this type ... -->
+<Component name="Order Pipelines Processor" type="Enticify.Cs2009.Components.ConfigurableOrderPipelinesProcessor, Enticify.Cs2009.Components, Version=0.1.0.0, Culture=neutral, PublicKeyToken=10ff57ed14d5fefa">
+  ...
 </Component>
 ```
 6.  Update the **Pipeline name** to your primary name:  
@@ -57,7 +57,7 @@ Wish you could change *at runtime* the PCF files that your Commerce Server 2009 
 ### Usage - how to switch at runtime
 
 1.  Add a reference to **Enticify.Cs2009.Components**.
-2.  Set up your Basket message.  E.g.:  
+2.  Set up your Basket query.  E.g.:  
     `var basketQuery = new CommerceQuery<Basket>();`
 3.  Configure the **Model** to use **Secondary** pipelines:  
     `ConfigurableOrderPipelinesProcessor.UserSecondaryPipelinesWhereApplicable(basketQuery.Model, "_topbanana");`

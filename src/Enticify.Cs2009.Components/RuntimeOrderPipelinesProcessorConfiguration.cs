@@ -3,16 +3,17 @@ using System.Linq;
 using System.Xml.Linq;
 using Microsoft.Commerce.Providers.Components;
 
-namespace SmartOperations
+namespace Enticify.Cs2009.Components
 {
     /// <summary>
-    /// Responsible for making a valid OrderPipelinesProcessorConfiguration with pipelines we specify at runtime.
-    /// This is a subclass of OrderPipelinesProcessorConfiguration so that we can call the protected DeserializeElement
-    /// with our new XML structure. 
+    /// Responsible for taking an existing OrderPipelinesProcessorConfiguration and returning a new one with the Pipeline
+    /// names maybe modified.  This is a subclass of OrderPipelinesProcessorConfiguration specificatlly so that we can call
+    /// the protected DeserializeElement with our new XML structure. 
+    /// Why?  Means we can switch the pipelines we use, without having to duplicated MessageHandler config in our XML.
     /// </summary>
-    public class SmartOrderPipelinesProcessorConfiguration : OrderPipelinesProcessorConfiguration
+    public class RuntimeOrderPipelinesProcessorConfiguration : OrderPipelinesProcessorConfiguration
     {
-        protected SmartOrderPipelinesProcessorConfiguration(XNode xml)
+        protected RuntimeOrderPipelinesProcessorConfiguration(XNode xml)
         {
             using (var r = xml.CreateReader())
             {
@@ -20,6 +21,13 @@ namespace SmartOperations
             }
         }
 
+        /// <summary>
+        /// Creates an OrderPipelinesProcessorConfiguration with the same number and type of pipelines as the provided
+        /// <paramref name="configuration"/>, but with the names maybe modified using <paramref name="nameChanger"/>.
+        /// </summary>
+        /// <param name="configuration"></param>
+        /// <param name="nameChanger"></param>
+        /// <returns></returns>
         public static OrderPipelinesProcessorConfiguration Create(OrderPipelinesProcessorConfiguration configuration, Func<string,string> nameChanger)
         {
             if (configuration == null) throw new ArgumentNullException("configuration");
@@ -36,7 +44,7 @@ namespace SmartOperations
                                       }).ToArray()
                 );
 
-            return new SmartOrderPipelinesProcessorConfiguration(config);
+            return new RuntimeOrderPipelinesProcessorConfiguration(config);
         }
     }
 }

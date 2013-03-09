@@ -3,12 +3,14 @@ ConfigurableOrderPipelineProcessor
 
 Wish you could change *at runtime* the PCF files that your Commerce Server 2009 Operation Sequence runs?  This would let you have **normal** and **debug** PCFs (for those times) or **awesome** and **plain** PCFs.  **Primary** pipelines are the ones you want to run 99% of the time.  **Secondary** pipelines are the ones we switch to at runtime (if requested).
 
-### Installation
+## Installation
 
 1.  Build this project.  *I'll make a Nuget if this works.  Until then, use the source.*
 2.  Add a reference to **Enticify.Cs2009.Components**
 
-### Example: Adding a secondary basket pipeline
+## Example: Adding a secondary basket pipeline
+
+### Configuration
 
 1.  Make a copy of basket.pcf with your chosen suffix.  E.g. basket_topbanana.pcf.
 2.  basket.pcf is now your secondary pipeline so change it as you want (e.g. add debug stuff).
@@ -25,13 +27,17 @@ Wish you could change *at runtime* the PCF files that your Commerce Server 2009 
 ```
 4.  Replace uses of OrderPipelineProcessor with ConfigurableOrderPipelineProcessor.  You just need to change the **type** attribute to the following:  
 ```xml
+<!-- From this type ... -->
 <Component name="Order Pipelines Processor" type="Enticify.Cs2009.Components.ConfigurableOrderPipelinesProcessor, Enticify.Cs2009.Components, Version=0.1.0.0, Culture=neutral, PublicKeyToken=10ff57ed14d5fefa">
   ...
 </Component>
+
+<!-- To this type ... -->
+<Component name="Order Pipelines Processor" type="Microsoft.Commerce.Providers.Components.OrderPipelinesProcessor, Microsoft.Commerce.Providers, Version=1.0.0.0, Culture=neutral,PublicKeyToken=31bf3856ad364e35">
+...
+</Component>
 ```
-
-2.  Then update the PCF names where you want to use a primary pipeline.
-
+5.  Update the **Pipeline name** to your primary name:   
 ```xml
 <Component name="Order Pipelines Processor" type="Enticify.Cs2009.Components.ConfigurableOrderPipelinesProcessor, Enticify.Cs2009.Components, Version=0.1.0.0, Culture=neutral, PublicKeyToken=10ff57ed14d5fefa">
   <Configuration
@@ -39,18 +45,20 @@ Wish you could change *at runtime* the PCF files that your Commerce Server 2009 
     customElementType="Microsoft.Commerce.Providers.Components.OrderPipelinesProcessorConfiguration, Microsoft.Commerce.Providers, Version=1.0.0.0, Culture=neutral,PublicKeyToken=31bf3856ad364e35">
     <OrderPipelinesProcessorConfiguration>
       <OrderPipelines>
+        <!-- Look Ma, I'm a primary pipeline! -->
         <Pipeline name="basket_topbanana" type="Basket"/>
         <Pipeline name="total" type="Total"/>
       </OrderPipelines>
     </OrderPipelinesProcessorConfiguration>
   </Configuration>
-
 </Component>
 ```
 
+### Usage - how to switch at runtime
 
-### Tell us when to make the switch
-
-So far, all this works as normal.  The pipelines in your config will run.
-
-
+1.  Reference to **Enticify.Cs2009.Components**.
+2.  Set up your Basket message.  E.g.:
+    var basketQuery = new CommerceQuery<Basket>();
+3.  Configure the **Model** to use **Secondary** pipelines:
+    ConfigurableOrderPipelinesProcessor.UserSecondaryPipelinesWhereApplicable(basketQuery.Model, "_topbanana");
+4.  You're done.

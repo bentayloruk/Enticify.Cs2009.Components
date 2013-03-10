@@ -5,7 +5,7 @@
     <id>@project@</id>
     <version>@build.number@</version>
     <authors>@authors@</authors>
-    <iconUrl>https://github.com/enticify/Enticify.Cs2009.Components/blob/master/assets/plug.png</iconUrl>
+    <iconUrl>https://raw.github.com/enticify/Enticify.Cs2009.Components/master/assets/plug.png</iconUrl>
     <language>en-US</language>
     @dependencies@
     <summary>@summary@</summary>

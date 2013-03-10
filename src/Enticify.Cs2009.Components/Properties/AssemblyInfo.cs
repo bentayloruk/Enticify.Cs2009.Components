@@ -22,8 +22,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCompany("Shape Factory Limited")]
 [assembly: AssemblyProduct("Enticify.Cs2009.Components")]
 [assembly: AssemblyCopyright("Copyright Shape Factory Limited 2013")]
-[assembly: AssemblyVersion("0.2.0")]
-[assembly: AssemblyFileVersion("0.2.0")]
+[assembly: AssemblyVersion("0.3.0")]
+[assembly: AssemblyFileVersion("0.3.0")]
 [assembly: AssemblyDelaySign(false)]
 
 

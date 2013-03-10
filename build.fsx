@@ -8,7 +8,7 @@
 open System
 open Fake
 
-let version = "0.2.0"
+let version = "0.3.0"
 let buildOutputPath = @".\build\output"
 let nugetOutputPath = @".\build\packages"
 let buildDirs = [ buildOutputPath; nugetOutputPath; ]

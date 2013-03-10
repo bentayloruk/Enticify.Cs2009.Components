@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <description>@description@</description>
+    <id>@project@</id>
+    <version>@build.number@</version>
+    <authors>@authors@</authors>
+    <iconUrl>https://github.com/enticify/Enticify.Cs2009.Components/blob/master/assets/plug.png</iconUrl>
+    <language>en-US</language>
+    @dependencies@
+    <summary>@summary@</summary>
+    <projectUrl>https://github.com/enticify/Enticify.Cs2009.Components</projectUrl>
+    <licenseUrl>https://github.com/enticify/Enticify.Cs2009.Components/blob/master/LICENSE.md</licenseUrl>
+    <tags>commerceserver cs2009</tags>    
+  </metadata>
+</package>

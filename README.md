@@ -5,6 +5,8 @@ Wish you could change *at runtime* the PCF files that your Commerce Server 2009 
 
 ## Installation
 
+Install using the [Enticify.Cs2009.Components Nuget](http://nuget.org/packages/Enticify.Cs2009.Components/).  Type the following at the Package Manager Console:
+
     PM> Install-Package Enticify.Cs2009.Components 
 
 ## Example: Adding a secondary basket pipeline

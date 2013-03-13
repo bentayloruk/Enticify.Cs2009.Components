@@ -76,9 +76,9 @@ I have integration tests that work for me.  Unfortunately, they are currently in
 
 To help my lovely customers switch between the Enticify and CS promotion components so they can see the awesome difference :)
 
-### Release Notes
+## Release Notes
 
-## 0.5.0
+### 0.5.0
 
 * Fix: Removed unecessary overrides of specialised CommerceOperation Execute* methods.
 * Change: Made configuration methods virtual protected.

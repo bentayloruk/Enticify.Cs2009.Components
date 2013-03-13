@@ -14,6 +14,7 @@ namespace Enticify.Cs2009.Components
     /// </summary>
     public class ConfigurableOrderPipelinesProcessor : OrderPipelinesProcessor, IConfigurable
     {
+        private const string ModelKey = "EnticifyPrimaryPcfSuffix";
         private OrderPipelinesProcessorConfiguration _realConfiguration;
 
         public new void Configure(ConfigurationElement configuration)
@@ -23,37 +24,36 @@ namespace Enticify.Cs2009.Components
             _realConfiguration  = configuration as OrderPipelinesProcessorConfiguration;
             base.Configure(configuration);
         }
+
         public override void Execute(CommerceOperation operation, OperationCacheDictionary operationCache, CommerceOperationResponse response)
         {
-            AltConfigurePipelinesIfRequestedByOperation(operation);
+            if(OperationConfiguredForSecondaryPipelines(operation))
+                ConfigureForSecondaryPipelines(operation);
             base.Execute(operation, operationCache, response);
         }
 
-        public override void ExecuteCreate(CommerceCreateOperation createOperation, OperationCacheDictionary operationCache, CommerceCreateOperationResponse response)
+        protected virtual bool OperationConfiguredForSecondaryPipelines(CommerceOperation operation)
         {
-            AltConfigurePipelinesIfRequestedByOperation(createOperation);
-            base.ExecuteCreate(createOperation, operationCache, response);
+            return operation.Model.Properties.ContainsProperty(ModelKey);
         }
 
-        public override void ExecuteDelete(CommerceDeleteOperation deleteOperation, OperationCacheDictionary operationCache, CommerceDeleteOperationResponse response)
+        protected virtual void ConfigureForSecondaryPipelines(CommerceOperation operation)
         {
-            AltConfigurePipelinesIfRequestedByOperation(deleteOperation);
-            base.ExecuteDelete(deleteOperation, operationCache, response);
-        }
+            //Configure will have been called with the "real" ConfigurationElement from the ChannelConfiguration.config.
+            //We "re-Configure" if this key is present in the operation.Model.
+            if(_realConfiguration == null)
+                throw new InvalidOperationException("Configure should have been called before an Execute.");
 
-        public override void ExecuteQuery(CommerceQueryOperation queryOperation, OperationCacheDictionary operationCache, CommerceQueryOperationResponse response)
-        {
-            AltConfigurePipelinesIfRequestedByOperation(queryOperation);
-            base.ExecuteQuery(queryOperation, operationCache, response);
-        }
+            var suffix = operation.Model.GetPropertyValue(ModelKey).ToString();
 
-        public override void ExecuteUpdate(CommerceUpdateOperation updateOperation, OperationCacheDictionary operationCache, CommerceUpdateOperationResponse response)
-        {
-            AltConfigurePipelinesIfRequestedByOperation(updateOperation);
-            base.ExecuteUpdate(updateOperation, operationCache, response);
-        }
+            if(String.IsNullOrEmpty(suffix))
+                throw new InvalidOperationException(string.Format("You must specify a non-empty suffix for {0}.", ModelKey));
 
-        private const string ModelKey = "EnticifyPrimaryPcfSuffix";
+            //Change this func if you want to switch names with a different convention.
+            Func<string, string> nameChanger = s => !s.EndsWith(suffix, StringComparison.InvariantCultureIgnoreCase) ? s : s.Substring(0, s.Length - suffix.Length);
+            var config = RuntimeOrderPipelinesProcessorConfiguration.Create(_realConfiguration, nameChanger);
+            base.Configure(config);
+        }
 
         /// <summary>
         /// Configure the <paramref name="model"/> so that <see cref="ConfigurableOrderPipelinesProcessor"/> will strip the 
@@ -69,24 +69,5 @@ namespace Enticify.Cs2009.Components
             model.SetPropertyValue(ModelKey, primaryPcfSuffix);
         }
 
-        private void AltConfigurePipelinesIfRequestedByOperation(CommerceOperation operation)
-        {
-            //Configure will have been called with the "real" ConfigurationElement from the ChannelConfiguration.config.
-            //We "re-Configure" if this key is present in the operation.Model.
-            if (!operation.Model.Properties.ContainsProperty(ModelKey)) return;
-
-            if(_realConfiguration == null)
-                throw new InvalidOperationException("Configure should have been called before an Execute.");
-
-            var suffix = operation.Model.GetPropertyValue(ModelKey).ToString();
-
-            if(String.IsNullOrEmpty(suffix))
-                throw new InvalidOperationException(string.Format("You must specify a non-empty suffix for {0}.", ModelKey));
-
-            //Change this func if you want to switch names with a different convention.
-            Func<string, string> nameChanger = s => !s.EndsWith(suffix, StringComparison.InvariantCultureIgnoreCase) ? s : s.Substring(0, s.Length - suffix.Length);
-            var config = RuntimeOrderPipelinesProcessorConfiguration.Create(_realConfiguration, nameChanger);
-            base.Configure(config);
-        }
     }
 }

@@ -14,8 +14,8 @@ namespace Enticify.Cs2009.Components
     /// </summary>
     public class ConfigurableOrderPipelinesProcessor : OrderPipelinesProcessor, IConfigurable
     {
-        private const string ModelKey = "EnticifyPrimaryPcfSuffix";
         private OrderPipelinesProcessorConfiguration _realConfiguration;
+        private const string ModelKey = "PipelineConfigurationData";
 
         public new void Configure(ConfigurationElement configuration)
         {
@@ -27,47 +27,30 @@ namespace Enticify.Cs2009.Components
 
         public override void Execute(CommerceOperation operation, OperationCacheDictionary operationCache, CommerceOperationResponse response)
         {
-            if(OperationConfiguredForSecondaryPipelines(operation))
-                ConfigureForSecondaryPipelines(operation);
+            if (operation == null) throw new ArgumentNullException("operation");
+            var maybeConfigCreator = TryGetConfigCreator(operation);
+            if (maybeConfigCreator != null)
+            {
+                //Configure will have been called with the "real" ConfigurationElement from the ChannelConfiguration.config.
+                //We "re-Configure" if this key is present in the operation.Model.
+                if(_realConfiguration == null)
+                    throw new InvalidOperationException("Configure should have been called before an Execute.");
+
+                base.Configure(maybeConfigCreator.Create(_realConfiguration));
+            }
             base.Execute(operation, operationCache, response);
         }
 
-        protected virtual bool OperationConfiguredForSecondaryPipelines(CommerceOperation operation)
+        protected virtual ICreateOrderPipelinesConfig TryGetConfigCreator(CommerceOperation commerceOperation)
         {
-            return operation.Model.Properties.ContainsProperty(ModelKey);
+            return commerceOperation.Model.GetPropertyValue(ModelKey) as ICreateOrderPipelinesConfig;
         }
 
-        protected virtual void ConfigureForSecondaryPipelines(CommerceOperation operation)
-        {
-            //Configure will have been called with the "real" ConfigurationElement from the ChannelConfiguration.config.
-            //We "re-Configure" if this key is present in the operation.Model.
-            if(_realConfiguration == null)
-                throw new InvalidOperationException("Configure should have been called before an Execute.");
-
-            var suffix = operation.Model.GetPropertyValue(ModelKey).ToString();
-
-            if(String.IsNullOrEmpty(suffix))
-                throw new InvalidOperationException(string.Format("You must specify a non-empty suffix for {0}.", ModelKey));
-
-            //Change this func if you want to switch names with a different convention.
-            Func<string, string> nameChanger = s => !s.EndsWith(suffix, StringComparison.InvariantCultureIgnoreCase) ? s : s.Substring(0, s.Length - suffix.Length);
-            var config = RuntimeOrderPipelinesProcessorConfiguration.Create(_realConfiguration, nameChanger);
-            base.Configure(config);
-        }
-
-        /// <summary>
-        /// Configure the <paramref name="model"/> so that <see cref="ConfigurableOrderPipelinesProcessor"/> will strip the 
-        /// <paramref name="primaryPcfSuffix"/> from any configured pipelines that end with the string and use the non-suffix
-        /// versions when executing the pipelines.
-        /// </summary>
-        /// <param name="model"></param>
-        /// <param name="primaryPcfSuffix"></param>
-        static public void UserSecondaryPipelinesWhereApplicable(CommerceEntity model, string primaryPcfSuffix)
+        static public void SetRuntimePipelineConfig(CommerceEntity model, ICreateOrderPipelinesConfig createOrderPipelinesConfig)
         {
             if (model == null) throw new ArgumentNullException("model");
-            if (primaryPcfSuffix == null) throw new ArgumentNullException("primaryPcfSuffix");
-            model.SetPropertyValue(ModelKey, primaryPcfSuffix);
+            if (createOrderPipelinesConfig == null) throw new ArgumentNullException("createOrderPipelinesConfig");
+            model.SetPropertyValue(ModelKey, createOrderPipelinesConfig);
         }
-
     }
 }

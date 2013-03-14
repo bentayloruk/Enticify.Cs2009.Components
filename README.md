@@ -37,12 +37,12 @@ The PipelineListConfig lets you specify a list of pipelines to run.
 
 1.  Add a reference to **Enticify.Cs2009.Components**.
 2.  Set up your Basket query.  E.g.:  
-```c#
+``` c#
 var basketQuery = new CommerceQuery<Basket>();
 ```
 3.  Configure the **Model** to use the PipelineListConfig:  
-```c#
-var config = new PipelineListConfig(){new PipelineConfigurationElementData("basket", OrderPipelineType.Basket)};  
+``` c#
+var config = new PipelineListConfig(){new PipelineConfigurationElementData("basket", OrderPipelineType.Basket)};
 ConfigurableOrderPipelinesProcessor.SetRuntimePipelineConfig(bq.Model, config);`
 ```
 4.  You're done.

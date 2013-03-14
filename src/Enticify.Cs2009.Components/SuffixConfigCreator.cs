@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 using System.Xml.Linq;
 using Microsoft.Commerce.Providers.Components;
 
-namespace Enticify.Cs2009.Components.Configs
+namespace Enticify.Cs2009.Components
 {
     /// <summary>
     /// Responsible for copying the existing pipeline config but removing the specified suffix from pipeline names that have it.

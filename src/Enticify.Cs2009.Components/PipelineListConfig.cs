@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Xml.Linq;
 using Microsoft.Commerce.Providers.Components;
 
-namespace Enticify.Cs2009.Components.Configs
+namespace Enticify.Cs2009.Components
 {
     [DataContract]
     public class PipelineListConfig : ICreateOrderPipelinesConfig

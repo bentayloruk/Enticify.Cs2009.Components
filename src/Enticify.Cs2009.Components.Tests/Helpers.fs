@@ -5,7 +5,6 @@ open Xunit
 open System.Xml
 open System.Xml.Linq
 open Enticify.Cs2009.Components
-open Enticify.Cs2009.Components.Configs
 open System.Collections.Generic
 open Microsoft.Commerce.Providers.Components
 

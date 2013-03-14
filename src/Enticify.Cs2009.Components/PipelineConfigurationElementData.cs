@@ -2,7 +2,7 @@
 using System.Runtime.Serialization;
 using Microsoft.CommerceServer.Runtime.Orders;
 
-namespace Enticify.Cs2009.Components.Configs
+namespace Enticify.Cs2009.Components
 {
     [DataContract]
     public class PipelineConfigurationElementData

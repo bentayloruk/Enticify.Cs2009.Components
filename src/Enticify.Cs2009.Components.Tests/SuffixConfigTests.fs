@@ -7,7 +7,6 @@ open System.Xml
 open System.Xml.Linq
 open System.Collections.Generic
 open Enticify.Cs2009.Components
-open Enticify.Cs2009.Components.Configs
 open Microsoft.Commerce.Providers.Components
 open Microsoft.CommerceServer.Runtime.Orders
 

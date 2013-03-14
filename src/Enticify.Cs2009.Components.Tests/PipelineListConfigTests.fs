@@ -6,7 +6,6 @@ open FsUnit.Xunit
 open System.Xml
 open System.Xml.Linq
 open Enticify.Cs2009.Components
-open Enticify.Cs2009.Components.Configs
 open Microsoft.CommerceServer.Runtime.Orders
 
 

@@ -71,12 +71,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ICreateOrderPipelinesConfig.cs" />
-    <Compile Include="Configs\PipelineListConfig.cs" />
+    <Compile Include="PipelineListConfig.cs" />
     <Compile Include="RuntimeOrderPipelinesProcessorConfiguration.cs" />
     <Compile Include="ConfigurableOrderPipelinesProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Configs\PipelineConfigurationElementData.cs" />
-    <Compile Include="Configs\SuffixConfigCreator.cs" />
+    <Compile Include="PipelineConfigurationElementData.cs" />
+    <Compile Include="SuffixConfigCreator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="intentionally-public.snk" />

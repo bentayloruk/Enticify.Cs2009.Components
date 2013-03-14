@@ -1,7 +1,7 @@
 ConfigurableOrderPipelineProcessor
 ====================================
 
-Wish you could change *at runtime* the PCF files that your Commerce Server 2009 Operation Sequence runs?  This would let you have **normal** and **debug** PCFs (for those times) or **awesome** and **plain** PCFs.  **Primary** pipelines are the ones you want to run 99% of the time.  **Secondary** pipelines are the ones we switch to at runtime (if requested).
+Wish you could change *at runtime* the PCF files that your Commerce Server 2009 Operation Sequence runs?  This would let you have **normal** and **debug** PCFs (for those times) or **awesome** and **plain** PCFs.  You could even have different PCFs for different client types. 
 
 ## Installation
 
@@ -24,31 +24,29 @@ Replace all ChannelConfiguration.config uses of OrderPipelineProcessor with Conf
 </Component>
 ```
 
-## Examples
-
-### Example: Specifying pipelines to run using PipelineListConfig 
+## Example: Specifying pipelines to run using PipelineListConfig 
 
 The PipelineListConfig lets you specify a list of pipelines to run.
 
-#### Configuration
+### Configuration
 
 1.  Add all the pipelines you need to the **pipelines** ChannelConfiguration.config.
 2.  Goto Usage!
 
-#### Usage - how to switch at runtime
+### Usage - how to switch at runtime
 
 1.  Add a reference to **Enticify.Cs2009.Components**.
 2.  Set up your Basket query.  E.g.:  
     `var basketQuery = new CommerceQuery<Basket>();`
 3.  Configure the **Model** to use the PipelineListConfig:  
-    ConfigurableOrderPipelinesProcessor.SetRuntimePipelineConfig(bq.Model, new PipelineListConfig(){new PipelineConfigurationElementData("basket", OrderPipelineType.Basket)});
+    `ConfigurableOrderPipelinesProcessor.SetRuntimePipelineConfig(bq.Model, new PipelineListConfig(){new PipelineConfigurationElementData("basket", OrderPipelineType.Basket)});`
 4.  You're done.
 
-### Example: Adding a secondary basket pipeline using SuffixConfig 
+## Example: Adding a secondary basket pipeline using SuffixConfig 
 
 The SuffixConfig lets you specify that you want the same config as in ChannelConfiguration.config, but with a suffic removed from the pipeline names that have it.
 
-#### Configuration
+### Configuration
 
 1.  Choose a suffix for your **Primary** pipelines.  I'm using **_topbanana**.
 1.  Make a copy of basket.pcf and add your suffix (e.g. basket_topbanana.pcf).
@@ -81,7 +79,7 @@ The SuffixConfig lets you specify that you want the same config as in ChannelCon
 </Component>
 ```
 
-#### Usage - how to switch at runtime
+### Usage - how to switch at runtime
 
 1.  Add a reference to **Enticify.Cs2009.Components**.
 2.  Set up your Basket query.  E.g.:  
@@ -94,15 +92,19 @@ The SuffixConfig lets you specify that you want the same config as in ChannelCon
 
 It's very simple.  Look [here](https://github.com/enticify/Enticify.Cs2009.Components/blob/master/src/Enticify.Cs2009.Components/ConfigurableOrderPipelinesProcessor.cs) and [here](https://github.com/enticify/Enticify.Cs2009.Components/blob/master/src/Enticify.Cs2009.Components/RuntimeOrderPipelinesProcessorConfiguration.cs).
 
-## Wot no tests!?
+##  Tests
 
-I have integration tests that work for me.  Unfortunately, they are currently in the private [Enticify repos](http://www.enticify.com/).
+The two tests are written in F#.  I also have integration tests that work for me.  Unfortunately, they are currently in the private [Enticify repos](http://www.enticify.com/).
 
 ## Why Dude?
 
 To help my lovely customers switch between the Enticify and CS promotion components so they can see the awesome difference :)
 
 ## Release Notes
+
+### 0.8.0
+
+* Re-designed the configuration options.  Committed some DTO serialization sins that may change for 3-tier deployments.
 
 ### 0.5.0
 

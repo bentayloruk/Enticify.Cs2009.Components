@@ -9,9 +9,46 @@ Install using the [Enticify.Cs2009.Components Nuget](http://nuget.org/packages/E
 
     PM> Install-Package Enticify.Cs2009.Components 
 
-## Example: Adding a secondary basket pipeline
+## Configuration
 
-### Configuration
+Replace all ChannelConfiguration.config uses of OrderPipelineProcessor with ConfigurableOrderPipelineProcessor.  You just need to change the **type** attribute...:  
+
+```xml
+<!-- From this type ... -->
+<Component name="Order Pipelines Processor" type="Microsoft.Commerce.Providers.Components.OrderPipelinesProcessor, Microsoft.Commerce.Providers, Version=1.0.0.0, Culture=neutral,PublicKeyToken=31bf3856ad364e35">
+...
+</Component>
+<!-- To this type ... -->
+<Component name="Order Pipelines Processor" type="Enticify.Cs2009.Components.ConfigurableOrderPipelinesProcessor, Enticify.Cs2009.Components, Version=0.1.0.0, Culture=neutral, PublicKeyToken=10ff57ed14d5fefa">
+  ...
+</Component>
+```
+
+## Examples
+
+### Example: Specifying pipelines to run using PipelineListConfig 
+
+The PipelineListConfig lets you specify a list of pipelines to run.
+
+#### Configuration
+
+1.  Add all the pipelines you need to the **pipelines** ChannelConfiguration.config.
+2.  Goto Usage!
+
+#### Usage - how to switch at runtime
+
+1.  Add a reference to **Enticify.Cs2009.Components**.
+2.  Set up your Basket query.  E.g.:  
+    `var basketQuery = new CommerceQuery<Basket>();`
+3.  Configure the **Model** to use the PipelineListConfig:  
+    ConfigurableOrderPipelinesProcessor.SetRuntimePipelineConfig(bq.Model, new PipelineListConfig(){new PipelineConfigurationElementData("basket", OrderPipelineType.Basket)});
+4.  You're done.
+
+### Example: Adding a secondary basket pipeline using SuffixConfig 
+
+The SuffixConfig lets you specify that you want the same config as in ChannelConfiguration.config, but with a suffic removed from the pipeline names that have it.
+
+#### Configuration
 
 1.  Choose a suffix for your **Primary** pipelines.  I'm using **_topbanana**.
 1.  Make a copy of basket.pcf and add your suffix (e.g. basket_topbanana.pcf).
@@ -26,17 +63,6 @@ Install using the [Enticify.Cs2009.Components Nuget](http://nuget.org/packages/E
     <!-- Total is fine without a secondary -->
     <pipeline name="total" path="total.pcf" type="OrderPipeline" />
 </pipelines>
-```
-4.  Replace uses of OrderPipelineProcessor with ConfigurableOrderPipelineProcessor.  You just need to change the **type** attribute...:  
-```xml
-<!-- From this type ... -->
-<Component name="Order Pipelines Processor" type="Microsoft.Commerce.Providers.Components.OrderPipelinesProcessor, Microsoft.Commerce.Providers, Version=1.0.0.0, Culture=neutral,PublicKeyToken=31bf3856ad364e35">
-...
-</Component>
-<!-- To this type ... -->
-<Component name="Order Pipelines Processor" type="Enticify.Cs2009.Components.ConfigurableOrderPipelinesProcessor, Enticify.Cs2009.Components, Version=0.1.0.0, Culture=neutral, PublicKeyToken=10ff57ed14d5fefa">
-  ...
-</Component>
 ```
 6.  Update the **Pipeline name** to your primary name:  
 ```xml
@@ -55,13 +81,13 @@ Install using the [Enticify.Cs2009.Components Nuget](http://nuget.org/packages/E
 </Component>
 ```
 
-### Usage - how to switch at runtime
+#### Usage - how to switch at runtime
 
 1.  Add a reference to **Enticify.Cs2009.Components**.
 2.  Set up your Basket query.  E.g.:  
     `var basketQuery = new CommerceQuery<Basket>();`
-3.  Configure the **Model** to use **Secondary** pipelines:  
-    `ConfigurableOrderPipelinesProcessor.UserSecondaryPipelinesWhereApplicable(basketQuery.Model, "_topbanana");`
+3.  Configure the **Model** to use the SuffixConfig:  
+    ConfigurableOrderPipelinesProcessor.SetRuntimePipelineConfig(bq.Model, SuffixConfig(){Suffix = "_topbanana"});
 4.  You're done.
 
 ## How is this happening?

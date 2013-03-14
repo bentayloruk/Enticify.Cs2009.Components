@@ -39,7 +39,10 @@ The PipelineListConfig lets you specify a list of pipelines to run.
 2.  Set up your Basket query.  E.g.:  
     `var basketQuery = new CommerceQuery<Basket>();`
 3.  Configure the **Model** to use the PipelineListConfig:  
-    `ConfigurableOrderPipelinesProcessor.SetRuntimePipelineConfig(bq.Model, new PipelineListConfig(){new PipelineConfigurationElementData("basket", OrderPipelineType.Basket)});`
+```
+var config = new PipelineListConfig(){new PipelineConfigurationElementData("basket", OrderPipelineType.Basket)};
+ConfigurableOrderPipelinesProcessor.SetRuntimePipelineConfig(bq.Model, config);`
+```
 4.  You're done.
 
 ## Example: Adding a secondary basket pipeline using SuffixConfig 

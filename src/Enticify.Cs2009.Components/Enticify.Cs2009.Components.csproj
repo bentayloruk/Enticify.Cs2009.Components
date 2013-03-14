@@ -76,7 +76,7 @@
     <Compile Include="ConfigurableOrderPipelinesProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PipelineConfigurationElementData.cs" />
-    <Compile Include="SuffixConfigCreator.cs" />
+    <Compile Include="SuffixConfig.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="intentionally-public.snk" />
